@@ -1,0 +1,23 @@
+:root {
+  --primary-color: #555555;
+  --secondary-color: #333333;
+  --text-color: #dddddd;
+  --background-color: #222222;
+  --border-color: #444444;
+  --hover-color: #666666;
+  --placeholder-color: #aaaaaa;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-color);
+  line-height: 1.6;
+  font-weight: 300;
+  background-color: var(--background-color);
+}
