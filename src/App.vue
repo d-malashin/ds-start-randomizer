@@ -1,42 +1,35 @@
 <template>
-  <div class="app" :style="{ backgroundImage: `url(${backgroundImage})` }">
+  <div class="app" :class="selectedGame">
+    <div class="background-overlay"></div>
     <div class="container">
-      <h1>{{ t('title') }}</h1>
-      <h1 class="subtitle">{{ t('subtitle') }}</h1>
+      <button class="language-selector" @click="toggleLanguage">
+        {{ currentLanguage === 'en' ? 'RU' : 'EN' }}
+      </button>
 
-      <div class="language-selector">
-        <select v-model="currentLocale" @change="changeLocale">
-          <option value="en">English</option>
-          <option value="ru">Русский</option>
+      <h1>{{ $t('title') }}</h1>
+
+      <div class="game-selector">
+        <select v-model="selectedGame">
+          <option value="ds1">{{ $t('ds1') }}</option>
+          <option value="ds2">{{ $t('ds2') }}</option>
+          <option value="ds3">{{ $t('ds3') }}</option>
         </select>
       </div>
 
-      <h2>{{ t('selectGame') }}</h2>
-      <select v-model="selectedGame" @change="resetSelection">
-        <option value="ds1">{{ t('games.ds1') }}</option>
-        <option value="ds2">{{ t('games.ds2') }}</option>
-        <option value="ds3">{{ t('games.ds3') }}</option>
-      </select>
+      <RandomizeButton
+        :loading="isLoading"
+        @randomize="randomize"
+      />
 
-      <button class="randomize-btn" @click="randomize">{{ t('randomize') }}</button>
+      <LoadingSpinner v-if="isLoading" />
 
-      <div class="result" v-if="selectedClass || selectedGift">
-        <div class="class-info" v-if="selectedClass">
-          <h3>{{ t('selectedClass') }}</h3>
-          <div class="selection-box">
-            <p>{{ selectedClass }}</p>
-          </div>
-        </div>
-        <div class="gift-info" v-if="selectedGift">
-          <h3>{{ t('selectedGift') }}</h3>
-          <div class="selection-box">
-            <p>{{ selectedGift }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="result" v-else>
-        <p class="placeholder">{{ t('clickRandomize') }}</p>
-      </div>
+      <RandomResult
+        v-if="(selectedClass || selectedGift) && !isLoading"
+        :selected-class="selectedClass"
+        :selected-gift="selectedGift"
+        class="result-container"
+      />
+      <p v-else-if="!isLoading" class="no-selection">{{ $t('noSelection') }}</p>
     </div>
   </div>
 </template>
@@ -44,56 +37,81 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import RandomResult from './components/RandomResult.vue'
+import RandomizeButton from './components/RandomizeButton.vue'
+import LoadingSpinner from './components/LoadingSpinner.vue'
 import { gameData } from './data/gameData'
 
 const { t, locale } = useI18n()
 
-const currentLocale = ref(locale.value)
 const selectedGame = ref('ds1')
-const selectedClass = ref('')
-const selectedGift = ref('')
+const selectedClass = ref(null)
+const selectedGift = ref(null)
+const isLoading = ref(false)
+const currentLanguage = computed(() => locale.value)
 
-const backgroundImage = computed(() => {
-  const images = {
-    ds1: '/images/ds1-bg.jpg',
-    ds2: '/images/ds2-bg.jpg',
-    ds3: '/images/ds3-bg.jpg'
+const getRandomNumber = async (min, max) => {
+  try {
+    const response = await fetch(
+      `https://www.random.org/integers/?num=1&min=${min}&max=${max}&col=1&base=10&format=plain&rnd=new`
+    )
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const number = await response.text()
+    return parseInt(number.trim())
+  } catch (error) {
+    console.warn('Failed to get random number from random.org, using Math.random instead:', error)
+    return Math.floor(Math.random() * (max - min + 1)) + min
   }
-  return images[selectedGame.value]
-})
-
-const changeLocale = () => {
-  locale.value = currentLocale.value
 }
 
-const resetSelection = () => {
-  selectedClass.value = ''
-  selectedGift.value = ''
+const toggleLanguage = () => {
+  locale.value = locale.value === 'en' ? 'ru' : 'en'
 }
 
-const randomize = () => {
-  const game = gameData[selectedGame.value]
-  const classes = Object.keys(game.classes)
-  const gifts = Object.keys(game.gifts)
+const randomize = async () => {
+  isLoading.value = true
+  selectedClass.value = null
+  selectedGift.value = null
 
-  selectedClass.value = classes[Math.floor(Math.random() * classes.length)]
-  selectedGift.value = gifts[Math.floor(Math.random() * gifts.length)]
+  try {
+    const gameVersion = gameData[selectedGame.value]
+    const classes = Object.entries(gameVersion.classes)
+    const gifts = Object.entries(gameVersion.gifts)
+
+    const [classIndex, giftIndex] = await Promise.all([
+      getRandomNumber(0, classes.length - 1),
+      getRandomNumber(0, gifts.length - 1)
+    ])
+
+    const randomClass = classes[classIndex][1]
+    const randomGift = gifts[giftIndex][1]
+
+    // Добавляем небольшую задержку для лучшего UX
+    await new Promise(resolve => setTimeout(resolve, 300))
+
+    selectedClass.value = randomClass
+    selectedGift.value = randomGift
+  } catch (error) {
+    console.error('Error during randomization:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 :root {
-  --primary-color: #555555;
-  --secondary-color: #333333;
-  --text-color: #dddddd;
-  --background-color: #222222;
-  --border-color: #444444;
-  --hover-color: #666666;
-  --placeholder-color: #aaaaaa;
-  --selection-bg: rgba(0, 0, 0, 0.6);
-  --selection-border: #777777;
+  --primary-color: #2c3e50;
+  --secondary-color: #34495e;
+  --text-color: #ecf0f1;
+  --background-color: #2c3e50;
+  --border-color: #34495e;
+  --hover-color: #3498db;
+  --placeholder-color: #95a5a6;
 }
 
 * {
@@ -104,20 +122,17 @@ const randomize = () => {
 
 body {
   font-family: 'Roboto', sans-serif;
-  color: var(--text-color);
   line-height: 1.6;
-  font-weight: 300;
+  color: var(--text-color);
 }
 
 .app {
   min-height: 100vh;
-  padding: 2rem;
+  position: relative;
+  transition: background-image 0.5s ease;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  position: relative;
-  display: flex;
-  justify-content: center;
+  background-repeat: no-repeat;
 }
 
 .app::before {
@@ -127,169 +142,137 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+
+.app.ds1::before {
+  background-image: url('/src/assets/images/ds1-bg.jpg');
+}
+
+.app.ds2::before {
+  background-image: url('/src/assets/images/ds2-bg.jpg');
+}
+
+.app.ds3::before {
+  background-image: url('/src/assets/images/ds3-bg.jpg');
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
 }
 
 .container {
-  width: 100%;
   max-width: 1200px;
+  width: 90%;
   margin: 0 auto;
   padding: 2rem;
-  background-color: rgba(51, 51, 51, 0.85);
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 1;
-  backdrop-filter: blur(5px);
 }
 
 h1 {
   text-align: center;
-  color: var(--text-color);
-  margin-bottom: 1rem;
-  font-size: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.subtitle {
-  font-size: 1.8rem;
   margin-bottom: 2rem;
-  color: var(--primary-color);
-}
-
-h2 {
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-h3 {
-  color: var(--text-color);
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 400;
-}
-
-select {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  background-color: rgba(51, 51, 51, 0.9);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-}
-
-select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-.randomize-btn {
-  display: block;
-  width: 100%;
-  padding: 1rem;
-  margin: 2rem 0;
-  background-color: var(--primary-color);
-  color: var(--text-color);
-  border: none;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.randomize-btn:hover {
-  background-color: var(--hover-color);
-}
-
-.result {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  min-height: 200px;
-}
-
-.class-info, .gift-info {
-  margin-bottom: 1.5rem;
-}
-
-.selection-box {
-  background-color: var(--selection-bg);
-  border: 1px solid var(--selection-border);
-  border-radius: 4px;
-  padding: 1rem;
-  margin-top: 0.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-}
-
-.selection-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.placeholder {
-  font-style: italic;
-  color: var(--placeholder-color);
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .language-selector {
   position: fixed;
   top: 1rem;
   right: 1rem;
-  z-index: 2;
-  background-color: rgba(51, 51, 51, 0.8);
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
   border-radius: 4px;
+  transition: all 0.3s ease;
+  z-index: 2;
 }
 
-.language-selector select {
-  width: auto;
-  margin-bottom: 0;
-  border: none;
-  background-color: transparent;
+.language-selector:hover {
+  background: var(--hover-color);
 }
 
-@media (max-width: 767px) {
-  .app {
-    padding: 1rem;
+.game-selector {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  width: 200px;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--hover-color);
+}
+
+.no-selection {
+  text-align: center;
+  color: var(--placeholder-color);
+  margin-top: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.result-container {
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
+  background: rgba(44, 62, 80, 0.8);
+  padding: 2rem;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
+@media (max-width: 768px) {
   .container {
     padding: 1rem;
-    width: 95%;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
-
-  .subtitle {
-    font-size: 1.5rem;
   }
 
   .language-selector {
     position: static;
-    margin-bottom: 1rem;
-    background-color: transparent;
-    padding: 0;
+    margin: 0 auto 1rem;
+    display: block;
   }
 
-  .language-selector select {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  select {
     width: 100%;
+    max-width: 200px;
+  }
+
+  .result-container {
+    padding: 1rem;
   }
 }
 </style>

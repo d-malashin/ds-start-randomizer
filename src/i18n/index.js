@@ -2,38 +2,36 @@ import { createI18n } from 'vue-i18n'
 
 const messages = {
   en: {
-    title: 'Dark Souls',
-    subtitle: 'Start Randomizer',
-    selectGame: 'Select Game Version',
-    games: {
-      ds1: 'Dark Souls',
-      ds2: 'Dark Souls II',
-      ds3: 'Dark Souls III'
-    },
+    title: 'Dark Souls Randomizer',
+    ds1: 'Dark Souls',
+    ds2: 'Dark Souls II',
+    ds3: 'Dark Souls III',
     randomize: 'Randomize',
-    selectedClass: 'Selected Class',
-    selectedGift: 'Selected Gift',
-    clickRandomize: 'Click "Randomize" to get your starting class and gift'
+    loading: 'Randomizing...',
+    selectGame: 'Select Game Version',
+    noSelection: 'Click the button above to randomize your starting class and gift',
+    clickRandomize: 'Click the button above to randomize your starting class and gift',
+    class: 'Class',
+    gift: 'Gift'
   },
   ru: {
-    title: 'Dark Souls',
-    subtitle: 'Рандомизатор старта',
-    selectGame: 'Выберите версию игры',
-    games: {
-      ds1: 'Dark Souls',
-      ds2: 'Dark Souls II',
-      ds3: 'Dark Souls III'
-    },
+    title: 'Рандомизатор Dark Souls',
+    ds1: 'Dark Souls',
+    ds2: 'Dark Souls II',
+    ds3: 'Dark Souls III',
     randomize: 'Рандомизировать',
-    selectedClass: 'Выбранный класс',
-    selectedGift: 'Выбранный дар',
-    clickRandomize: 'Нажмите "Рандомизировать" чтобы получить начальный класс и дар'
+    loading: 'Рандомизация...',
+    selectGame: 'Выберите версию игры',
+    noSelection: 'Нажмите кнопку выше, чтобы рандомизировать начальный класс и подарок',
+    clickRandomize: 'Нажмите кнопку выше, чтобы рандомизировать начальный класс и подарок',
+    class: 'Класс',
+    gift: 'Подарок'
   }
 }
 
 export const i18n = createI18n({
   legacy: false,
-  locale: 'ru',
+  locale: 'en',
   fallbackLocale: 'en',
   messages
 })
