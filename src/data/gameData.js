@@ -5,16 +5,16 @@ export const gameData = {
         en: 'Warrior',
         ru: 'Воин',
         description: {
-          en: 'Fearless Warrior. Weapon expert. High strength, dexterity.',
-          ru: 'Бесстрашный воин. Эксперт по оружию. Высокая сила.'
+          en: 'A well-balanced class with high strength and vitality. Perfect for beginners.',
+          ru: 'Сбалансированный класс с высокими показателями силы и жизненной силы. Идеально подходит для новичков.'
         }
       },
       knight: {
         en: 'Knight',
         ru: 'Рыцарь',
         description: {
-          en: 'Low-ranking knight. High HP, solid armor. Not easily toppled.',
-          ru: 'Небогатый рыцарь. Много здоровья, прочная броня.'
+          en: 'A heavily armored class with high defense. Starts with good equipment.',
+          ru: 'Класс в тяжелой броне с высокой защитой. Начинает с хорошим снаряжением.'
         }
       },
       wanderer: {
@@ -29,8 +29,8 @@ export const gameData = {
         en: 'Thief',
         ru: 'Вор',
         description: {
-          en: 'Guilt-ridden thief. High critical hits. Has Master Key.',
-          ru: 'Бессовестный вор. Мастер критических ударов. Имеет отмычку.'
+          en: 'A nimble class with high dexterity. Starts with the Master Key.',
+          ru: 'Проворный класс с высокой ловкостью. Начинает с Главным Ключом.'
         }
       },
       bandit: {
@@ -53,16 +53,16 @@ export const gameData = {
         en: 'Sorcerer',
         ru: 'Волшебник',
         description: {
-          en: 'Sorcerer of Vinheim Dragon School. Casts soul sorceries.',
-          ru: 'Волшебник из Школы Драконов. Владеет заклинанием Волшебства.'
+          en: 'A powerful spellcaster with high intelligence. Starts with powerful sorceries.',
+          ru: 'Могущественный заклинатель с высоким интеллектом. Начинает с мощными чарами.'
         }
       },
       pyromancer: {
         en: 'Pyromancer',
         ru: 'Пиромант',
         description: {
-          en: 'Great Swamp pyromancer. Casts fire spells and wields a hand axe.',
-          ru: 'Болотный Пиромант. Использует магию огня.'
+          en: 'A spellcaster specializing in fire magic. Starts with a powerful pyromancy flame.',
+          ru: 'Заклинатель, специализирующийся на огненной магии. Начинает с мощным пламенем пиромантии.'
         }
       },
       cleric: {
@@ -83,15 +83,47 @@ export const gameData = {
       }
     },
     gifts: {
-      'master-key': {
+      masterKey: {
         en: 'Master Key',
-        ru: 'Главный ключ',
+        ru: 'Главный Ключ',
         description: {
-          en: 'Skeleton key that opens most basic locks. Useful for shortcuts.',
-          ru: 'Отмычка, открывающая большинство простых замков. Полезна для коротких путей.'
+          en: 'Opens many locked doors throughout the game.',
+          ru: 'Открывает множество запертых дверей в игре.'
         }
       },
-      'goddess-blessing': {
+      blackFirebomb: {
+        en: 'Black Firebomb',
+        ru: 'Чёрная Огненная Бомба',
+        description: {
+          en: 'Powerful explosive item. Useful for defeating early bosses.',
+          ru: 'Мощный взрывной предмет. Полезен для победы над ранними боссами.'
+        }
+      },
+      twinHumanities: {
+        en: 'Twin Humanities',
+        ru: 'Близнецы-Человечности',
+        description: {
+          en: 'Rare item that can be used to kindle bonfires or restore humanity.',
+          ru: 'Редкий предмет, который можно использовать для разжигания костров или восстановления человечности.'
+        }
+      },
+      binoculars: {
+        en: 'Binoculars',
+        ru: 'Бинокль',
+        description: {
+          en: 'Allows you to zoom in and observe your surroundings.',
+          ru: 'Позволяет приближать и наблюдать за окружением.'
+        }
+      },
+      pendant: {
+        en: 'Pendant',
+        ru: 'Кулон',
+        description: {
+          en: 'A mysterious item with unknown effects.',
+          ru: 'Таинственный предмет с неизвестными эффектами.'
+        }
+      },
+      goddessBlessing: {
         en: 'Goddess Blessing',
         ru: 'Благословение богини',
         description: {
@@ -99,39 +131,7 @@ export const gameData = {
           ru: 'Святая вода богини Гвиневры. Полностью восстанавливает здоровье и снимает эффекты статуса.'
         }
       },
-      'black-firebomb': {
-        en: 'Black Firebomb',
-        ru: 'Черная огненная бомба',
-        description: {
-          en: 'Powerful thrown weapon. Effective against early bosses.',
-          ru: 'Мощное метательное оружие. Эффективно против ранних боссов.'
-        }
-      },
-      'twin-humanities': {
-        en: 'Twin Humanities',
-        ru: 'Двойное человечество',
-        description: {
-          en: 'Two doses of humanity. Restores human form and kindles bonfires.',
-          ru: 'Две дозы человечности. Восстанавливает человеческую форму и разжигает костры.'
-        }
-      },
-      'binoculars': {
-        en: 'Binoculars',
-        ru: 'Бинокль',
-        description: {
-          en: 'Allows distant viewing. Useful for scouting areas.',
-          ru: 'Позволяет смотреть вдаль. Полезен для разведки местности.'
-        }
-      },
-      'pendant': {
-        en: 'Pendant',
-        ru: 'Кулон',
-        description: {
-          en: 'Mysterious pendant with no obvious use.',
-          ru: 'Таинственный кулон без явного предназначения.'
-        }
-      },
-      'tiny-beings-ring': {
+      tinyBeingsRing: {
         en: 'Tiny Being\'s Ring',
         ru: 'Кольцо крошечного существа',
         description: {
@@ -139,7 +139,7 @@ export const gameData = {
           ru: 'Кольцо, слегка увеличивающее максимальное здоровье.'
         }
       },
-      'old-witch-ring': {
+      oldWitchRing: {
         en: 'Old Witch\'s Ring',
         ru: 'Кольцо старой ведьмы',
         description: {
@@ -155,264 +155,232 @@ export const gameData = {
         en: 'Warrior',
         ru: 'Воин',
         description: {
-          en: 'High strength character with good equipment. Skilled with sword and shield.',
-          ru: 'Персонаж с высокой силой и хорошим снаряжением. Умело владеет мечом и щитом.'
+          en: 'A well-balanced class with high strength and vitality.',
+          ru: 'Сбалансированный класс с высокими показателями силы и жизненной силы.'
         }
       },
       knight: {
         en: 'Knight',
         ru: 'Рыцарь',
         description: {
-          en: 'Well-armored warrior with balanced stats. Good starting equipment.',
-          ru: 'Хорошо бронированный воин со сбалансированными характеристиками. Хорошее начальное снаряжение.'
+          en: 'A heavily armored class with high defense.',
+          ru: 'Класс в тяжелой броне с высокой защитой.'
         }
       },
       swordsman: {
         en: 'Swordsman',
         ru: 'Мечник',
         description: {
-          en: 'Skilled dual-wielding warrior. High dexterity and adaptability.',
-          ru: 'Умелый воин, владеющий двумя клинками. Высокая ловкость и адаптивность.'
+          en: 'A dexterous class specializing in sword combat.',
+          ru: 'Ловкий класс, специализирующийся на бое на мечах.'
         }
       },
       bandit: {
         en: 'Bandit',
         ru: 'Бандит',
         description: {
-          en: 'High endurance character with good adaptability. Starts with bow.',
-          ru: 'Персонаж с высокой выносливостью и хорошей адаптивностью. Начинает с луком.'
+          en: 'A strength-focused class with high physical damage.',
+          ru: 'Класс, ориентированный на силу с высоким физическим уроном.'
         }
       },
       cleric: {
         en: 'Cleric',
         ru: 'Клирик',
         description: {
-          en: 'Miracle-casting warrior with high faith. Starts with healing spells.',
-          ru: 'Воин, использующий чудеса, с высокой верой. Начинает с исцеляющими заклинаниями.'
+          en: 'A faith-based class with healing abilities.',
+          ru: 'Класс, основанный на вере, с способностями к исцелению.'
         }
       },
       sorcerer: {
         en: 'Sorcerer',
         ru: 'Волшебник',
         description: {
-          en: 'Intelligence-focused spellcaster. Starts with powerful sorceries.',
-          ru: 'Маг, сфокусированный на интеллекте. Начинает с мощными заклинаниями.'
+          en: 'An intelligence-based class with powerful spells.',
+          ru: 'Класс, основанный на интеллекте, с мощными заклинаниями.'
         }
       },
       explorer: {
         en: 'Explorer',
         ru: 'Исследователь',
         description: {
-          en: 'Well-equipped adventurer. Starts with many items and tools.',
-          ru: 'Хорошо экипированный путешественник. Начинает со множеством предметов и инструментов.'
+          en: 'A versatile class with high adaptability.',
+          ru: 'Универсальный класс с высокой адаптивностью.'
         }
       },
       deprived: {
         en: 'Deprived',
-        ru: 'Обездоленный',
+        ru: 'Нищий',
         description: {
-          en: 'Soul level 1 with equal stats. Challenging start with minimal equipment.',
-          ru: 'Первый уровень души с равными характеристиками. Сложное начало с минимальным снаряжением.'
+          en: 'A challenging class that starts with nothing.',
+          ru: 'Сложный класс, который начинается с ничего.'
         }
       }
     },
     gifts: {
-      'healing-wares': {
+      healingWares: {
         en: 'Healing Wares',
-        ru: 'Целебные товары',
+        ru: 'Целебные Припасы',
         description: {
-          en: 'Collection of healing items. Good for early survival.',
-          ru: 'Набор целебных предметов. Хорош для выживания на ранних этапах.'
+          en: 'Various healing items to help you survive.',
+          ru: 'Различные целебные предметы, чтобы помочь вам выжить.'
         }
       },
-      'homeward-bone': {
-        en: 'Homeward Bone',
-        ru: 'Кость возвращения',
+      bonfireAscetic: {
+        en: 'Bonfire Ascetic',
+        ru: 'Аскет Костров',
         description: {
-          en: 'Returns you to the last bonfire rested at.',
-          ru: 'Возвращает к последнему костру, у которого вы отдыхали.'
+          en: 'Increases the difficulty of an area but also its rewards.',
+          ru: 'Увеличивает сложность области, но также и её награды.'
         }
       },
-      'human-effigy': {
-        en: 'Human Effigy',
-        ru: 'Человеческое подобие',
-        description: {
-          en: 'Restores human form and maximum health.',
-          ru: 'Восстанавливает человеческую форму и максимальное здоровье.'
-        }
-      },
-      'bonfire-aesthetic': {
-        en: 'Bonfire Aesthetic',
-        ru: 'Эстетика костра',
-        description: {
-          en: 'Strengthens enemies in the area but also improves rewards.',
-          ru: 'Усиливает врагов в области, но также улучшает награды.'
-        }
-      },
-      'petrified-something': {
+      petrifiedSomething: {
         en: 'Petrified Something',
-        ru: 'Окаменевшее нечто',
+        ru: 'Что-то Окаменевшее',
         description: {
-          en: 'Mysterious petrified object. Can be traded with Dyna and Tillo.',
-          ru: 'Таинственный окаменевший предмет. Можно обменять у Дины и Тилло.'
+          en: 'A mysterious item that can be traded for rare equipment.',
+          ru: 'Таинственный предмет, который можно обменять на редкое снаряжение.'
         }
       },
-      'seed-of-tree-of-giants': {
-        en: 'Seed of Tree of Giants',
-        ru: 'Семя дерева гигантов',
+      seedOfAGiant: {
+        en: 'Seed of a Giant',
+        ru: 'Семя Гиганта',
         description: {
-          en: 'Makes enemies attack dark spirits.',
-          ru: 'Заставляет врагов атаковать темных духов.'
+          en: 'Increases the health of friendly phantoms.',
+          ru: 'Увеличивает здоровье дружественных фантомов.'
+        }
+      },
+      smallSmoothAndSilkyStone: {
+        en: 'Small Smooth and Silky Stone',
+        ru: 'Маленький Гладкий и Шёлковый Камень',
+        description: {
+          en: 'Can be traded for various items.',
+          ru: 'Можно обменять на различные предметы.'
         }
       }
     }
   },
   ds3: {
     classes: {
-      knight: {
-        en: 'Knight',
-        ru: 'Рыцарь',
-        description: {
-          en: 'Well-equipped knight with high vitality. Solid starting class.',
-          ru: 'Хорошо экипированный рыцарь с высокой живучестью. Надежный стартовый класс.'
-        }
-      },
-      mercenary: {
-        en: 'Mercenary',
-        ru: 'Наемник',
-        description: {
-          en: 'Dexterous warrior with dual scimitars. High mobility and damage.',
-          ru: 'Ловкий воин с двумя скимитарами. Высокая подвижность и урон.'
-        }
-      },
       warrior: {
         en: 'Warrior',
         ru: 'Воин',
         description: {
-          en: 'Strong warrior with high vigor. Good with heavy weapons.',
-          ru: 'Сильный воин с высокой энергией. Хорош с тяжелым оружием.'
+          en: 'A well-balanced class with high strength and vitality.',
+          ru: 'Сбалансированный класс с высокими показателями силы и жизненной силы.'
+        }
+      },
+      knight: {
+        en: 'Knight',
+        ru: 'Рыцарь',
+        description: {
+          en: 'A heavily armored class with high defense.',
+          ru: 'Класс в тяжелой броне с высокой защитой.'
+        }
+      },
+      mercenary: {
+        en: 'Mercenary',
+        ru: 'Наёмник',
+        description: {
+          en: 'A dexterous class specializing in dual-wielding.',
+          ru: 'Ловкий класс, специализирующийся на владении двумя мечами.'
         }
       },
       herald: {
         en: 'Herald',
-        ru: 'Вестник',
+        ru: 'Геральд',
         description: {
-          en: 'Spear-wielding knight with healing miracles. Good mix of combat and faith.',
-          ru: 'Рыцарь с копьем и исцеляющими чудесами. Хорошее сочетание боя и веры.'
+          en: 'A faith-based class with healing abilities.',
+          ru: 'Класс, основанный на вере, с способностями к исцелению.'
         }
       },
       thief: {
         en: 'Thief',
         ru: 'Вор',
         description: {
-          en: 'Agile character with high luck. Good at critical hits and finding items.',
-          ru: 'Проворный персонаж с высокой удачей. Хорош в критических ударах и поиске предметов.'
+          en: 'A nimble class with high dexterity and luck.',
+          ru: 'Проворный класс с высокой ловкостью и удачей.'
         }
       },
       assassin: {
         en: 'Assassin',
-        ru: 'Ассасин',
+        ru: 'Убийца',
         description: {
-          en: 'Dexterous spellsword with stealth abilities. Mix of sorcery and combat.',
-          ru: 'Ловкий маг-мечник со способностями к скрытности. Сочетание магии и боя.'
+          en: 'A stealthy class with high critical damage.',
+          ru: 'Скрытный класс с высоким критическим уроном.'
         }
       },
       sorcerer: {
         en: 'Sorcerer',
         ru: 'Волшебник',
         description: {
-          en: 'Intelligence-focused spellcaster. Powerful ranged magic attacks.',
-          ru: 'Маг, сфокусированный на интеллекте. Мощные магические атаки на расстоянии.'
+          en: 'An intelligence-based class with powerful spells.',
+          ru: 'Класс, основанный на интеллекте, с мощными заклинаниями.'
         }
       },
       pyromancer: {
         en: 'Pyromancer',
         ru: 'Пиромант',
         description: {
-          en: 'Fire-wielding spellcaster. Balance of intelligence and faith.',
-          ru: 'Маг, владеющий огнем. Баланс интеллекта и веры.'
+          en: 'A class specializing in fire magic.',
+          ru: 'Класс, специализирующийся на огненной магии.'
         }
       },
       cleric: {
         en: 'Cleric',
         ru: 'Клирик',
         description: {
-          en: 'Faith-focused miracle caster. Strong healing and support abilities.',
-          ru: 'Священник, сфокусированный на вере. Сильные способности к исцелению и поддержке.'
+          en: 'A faith-based class with healing and offensive miracles.',
+          ru: 'Класс, основанный на вере, с исцеляющими и атакующими чудесами.'
         }
       },
       deprived: {
         en: 'Deprived',
-        ru: 'Обездоленный',
+        ru: 'Нищий',
         description: {
-          en: 'Naked warrior with equal stats. Most challenging but flexible start.',
-          ru: 'Голый воин с равными характеристиками. Самое сложное, но гибкое начало.'
+          en: 'A challenging class that starts with nothing.',
+          ru: 'Сложный класс, который начинается с ничего.'
         }
       }
     },
     gifts: {
-      'life-ring': {
+      lifeRing: {
         en: 'Life Ring',
-        ru: 'Кольцо жизни',
+        ru: 'Кольцо Жизни',
         description: {
-          en: 'Increases maximum HP. Useful for any build.',
-          ru: 'Увеличивает максимальное здоровье. Полезно для любого билда.'
+          en: 'Increases maximum health.',
+          ru: 'Увеличивает максимальное здоровье.'
         }
       },
-      'divine-blessing': {
-        en: 'Divine Blessing',
-        ru: 'Божественное благословение',
+      sovereignsSoul: {
+        en: 'Sovereign\'s Soul',
+        ru: 'Душа Суверена',
         description: {
-          en: 'Fully restores HP and removes status effects.',
-          ru: 'Полностью восстанавливает здоровье и снимает эффекты статуса.'
+          en: 'Can be consumed for souls or traded for items.',
+          ru: 'Можно использовать для получения душ или обменять на предметы.'
         }
       },
-      'hidden-blessing': {
-        en: 'Hidden Blessing',
-        ru: 'Скрытое благословение',
-        description: {
-          en: 'Fully restores FP. Rare and valuable item.',
-          ru: 'Полностью восстанавливает очки концентрации. Редкий и ценный предмет.'
-        }
-      },
-      'black-firebomb': {
-        en: 'Black Firebomb',
-        ru: 'Черная огненная бомба',
-        description: {
-          en: 'Powerful thrown weapon. Good for early game damage.',
-          ru: 'Мощное метательное оружие. Хорошо для урона в начале игры.'
-        }
-      },
-      'fire-gem': {
-        en: 'Fire Gem',
-        ru: 'Огненный самоцвет',
-        description: {
-          en: 'Infusion gem that adds fire damage to weapons.',
-          ru: 'Самоцвет наполнения, добавляющий урон огнем оружию.'
-        }
-      },
-      'sovereignless-soul': {
-        en: 'Sovereignless Soul',
-        ru: 'Душа без владельца',
-        description: {
-          en: 'Soul of a nameless warrior. Provides many souls when used.',
-          ru: 'Душа безымянного воина. Дает много душ при использовании.'
-        }
-      },
-      'young-white-branch': {
+      youngWhiteBranch: {
         en: 'Young White Branch',
-        ru: 'Молодая белая ветвь',
+        ru: 'Молодая Белая Ветвь',
         description: {
-          en: 'Gift from a giant. Transforms you into environmental objects.',
-          ru: 'Подарок от великана. Превращает вас в объекты окружения.'
+          en: 'Allows you to blend in with the environment.',
+          ru: 'Позволяет слиться с окружением.'
         }
       },
-      'cracked-red-eye-orb': {
-        en: 'Cracked Red Eye Orb',
-        ru: 'Треснувший красный око-шар',
+      fireGem: {
+        en: 'Fire Gem',
+        ru: 'Огненный Камень',
         description: {
-          en: 'Allows invasion of other players\' worlds.',
-          ru: 'Позволяет вторгаться в миры других игроков.'
+          en: 'Used to infuse weapons with fire damage.',
+          ru: 'Используется для зачарования оружия огненным уроном.'
+        }
+      },
+      hiddenBlessing: {
+        en: 'Hidden Blessing',
+        ru: 'Скрытое Благословление',
+        description: {
+          en: 'A rare consumable that restores health and cures status effects.',
+          ru: 'Редкий расходный материал, который восстанавливает здоровье и лечит статус-эффекты.'
         }
       }
     }

@@ -1,35 +1,46 @@
 <template>
-  <div class="app" :class="selectedGame">
-    <div class="background-overlay"></div>
+  <div class="app" :style="{ background: backgroundColor, backgroundImage: backgroundImage }">
     <div class="container">
-      <button class="language-selector" @click="toggleLanguage">
-        {{ currentLanguage === 'en' ? 'RU' : 'EN' }}
-      </button>
+      <h1>{{ t('title') }}</h1>
 
-      <h1>{{ $t('title') }}</h1>
+      <div class="language-selector">
+        <button
+          @click="toggleLanguage"
+          :class="{ active: currentLanguage === 'en' }"
+        >
+          EN
+        </button>
+        <button
+          @click="toggleLanguage"
+          :class="{ active: currentLanguage === 'ru' }"
+        >
+          RU
+        </button>
+      </div>
 
       <div class="game-selector">
-        <select v-model="selectedGame">
-          <option value="ds1">{{ $t('ds1') }}</option>
-          <option value="ds2">{{ $t('ds2') }}</option>
-          <option value="ds3">{{ $t('ds3') }}</option>
-        </select>
+        <button
+          v-for="game in games"
+          :key="game.id"
+          @click="selectGame(game.id)"
+          :class="{ active: selectedGame === game.id }"
+        >
+          {{ game.name }}
+        </button>
       </div>
 
       <RandomizeButton
         :loading="isLoading"
+        :selected-game="selectedGame"
         @randomize="randomize"
       />
 
-      <LoadingSpinner v-if="isLoading" />
-
       <RandomResult
-        v-if="(selectedClass || selectedGift) && !isLoading"
+        :selected-game="selectedGame"
         :selected-class="selectedClass"
         :selected-gift="selectedGift"
-        class="result-container"
+        :is-spinning="isSpinning"
       />
-      <p v-else-if="!isLoading" class="no-selection">{{ $t('noSelection') }}</p>
     </div>
   </div>
 </template>
@@ -37,86 +48,150 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import RandomResult from './components/RandomResult.vue'
 import RandomizeButton from './components/RandomizeButton.vue'
-import LoadingSpinner from './components/LoadingSpinner.vue'
+import RandomResult from './components/RandomResult.vue'
 import { gameData } from './data/gameData'
+import ds1Bg from './assets/images/ds1-bg.jpg'
+import ds2Bg from './assets/images/ds2-bg.jpg'
+import ds3Bg from './assets/images/ds3-bg.jpg'
 
 const { t, locale } = useI18n()
-
-const selectedGame = ref('ds1')
+const currentLanguage = ref(locale.value)
+const selectedGame = ref(null)
 const selectedClass = ref(null)
 const selectedGift = ref(null)
 const isLoading = ref(false)
-const currentLanguage = computed(() => locale.value)
+const result = ref(null)
+const isSpinning = ref(false)
 
-const getRandomNumber = async (min, max) => {
+const games = [
+  { id: 'ds1', name: 'Dark Souls' },
+  { id: 'ds2', name: 'Dark Souls II' },
+  { id: 'ds3', name: 'Dark Souls III' }
+]
+
+const backgroundColor = computed(() => {
+  switch (selectedGame.value) {
+    case 'ds1':
+      return 'linear-gradient(135deg, rgba(44, 62, 80, 0.8) 0%, rgba(74, 101, 114, 0.8) 100%)'
+    case 'ds2':
+      return 'linear-gradient(135deg, rgba(52, 73, 94, 0.8) 0%, rgba(93, 109, 126, 0.8) 100%)'
+    case 'ds3':
+      return 'linear-gradient(135deg, rgba(44, 62, 80, 0.8) 0%, rgba(86, 101, 115, 0.8) 100%)'
+    default:
+      return 'linear-gradient(135deg, rgba(44, 62, 80, 0.8) 0%, rgba(74, 101, 114, 0.8) 100%)'
+  }
+})
+
+const backgroundImage = computed(() => {
+  switch (selectedGame.value) {
+    case 'ds1':
+      return `url(${ds1Bg})`
+    case 'ds2':
+      return `url(${ds2Bg})`
+    case 'ds3':
+      return `url(${ds3Bg})`
+    default:
+      return `url(${ds1Bg})`
+  }
+})
+
+const toggleLanguage = () => {
+  currentLanguage.value = currentLanguage.value === 'en' ? 'ru' : 'en'
+  locale.value = currentLanguage.value
+}
+
+const selectGame = (gameId) => {
+  selectedGame.value = gameId
+  selectedClass.value = null
+  selectedGift.value = null
+}
+
+async function getRandomNumber(min, max) {
   try {
-    const response = await fetch(
-      `https://www.random.org/integers/?num=1&min=${min}&max=${max}&col=1&base=10&format=plain&rnd=new`
-    )
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
+    // Проверяем, что min и max являются числами
+    if (isNaN(min) || isNaN(max)) {
+      throw new Error('Invalid min or max value')
     }
+
+    // Проверяем, что max не превышает допустимое значение
+    const safeMax = Math.min(max, 1000000000)
+    const safeMin = Math.max(min, -1000000000)
+
+    const response = await fetch(
+      `https://www.random.org/integers/?num=1&min=${safeMin}&max=${safeMax}&col=1&base=10&format=plain&rnd=new`
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch random number')
+    }
+
     const number = await response.text()
     return parseInt(number.trim())
   } catch (error) {
-    console.warn('Failed to get random number from random.org, using Math.random instead:', error)
+    console.error('Error fetching random number:', error)
+    // Возвращаем случайное число в заданном диапазоне
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
 }
 
-const toggleLanguage = () => {
-  locale.value = locale.value === 'en' ? 'ru' : 'en'
-}
-
 const randomize = async () => {
-  if (!gameData.value[selectedGame.value]) return
+  if (isLoading.value) return
 
   isLoading.value = true
+  result.value = null
   selectedClass.value = null
   selectedGift.value = null
 
-  // Запускаем анимацию рулетки
-  const spinDuration = 3000 // 3 секунды
-  const startTime = Date.now()
+  try {
+    // Получаем случайные числа от random.org
+    const classIndex = await getRandomNumber(0, Object.keys(gameData[selectedGame.value].classes).length - 1)
+    const giftIndex = await getRandomNumber(0, Object.keys(gameData[selectedGame.value].gifts).length - 1)
 
-  // Функция для получения случайного элемента из массива
-  const getRandomItem = (array) => {
-    const randomIndex = Math.floor(Math.random() * array.length)
-    return array[randomIndex]
-  }
+    // Устанавливаем выбранные значения
+    selectedClass.value = Object.values(gameData[selectedGame.value].classes)[classIndex]
+    selectedGift.value = Object.values(gameData[selectedGame.value].gifts)[giftIndex]
 
-  // Анимация прокрутки
-  const animate = () => {
-    const elapsed = Date.now() - startTime
-    const progress = Math.min(elapsed / spinDuration, 1)
+    // Запускаем анимацию прокрутки
+    isSpinning.value = true
 
-    // Плавное замедление
-    const easeOut = 1 - Math.pow(1 - progress, 3)
+    // Ждем завершения анимации
+    await new Promise(resolve => setTimeout(resolve, 3000))
 
-    if (progress < 1) {
-      // Продолжаем анимацию
-      selectedClass.value = getRandomItem(Object.values(gameData.value[selectedGame.value].classes))
-      selectedGift.value = getRandomItem(Object.values(gameData.value[selectedGame.value].gifts))
-      requestAnimationFrame(animate)
-    } else {
-      // Завершаем анимацию и выбираем финальные значения через random.org
-      const classes = Object.values(gameData.value[selectedGame.value].classes)
-      const gifts = Object.values(gameData.value[selectedGame.value].gifts)
-
-      Promise.all([
-        getRandomNumber(0, classes.length - 1),
-        getRandomNumber(0, gifts.length - 1)
-      ]).then(([classIndex, giftIndex]) => {
-        selectedClass.value = classes[classIndex]
-        selectedGift.value = gifts[giftIndex]
-        isLoading.value = false
-      })
+    // Устанавливаем результат
+    result.value = {
+      class: selectedClass.value,
+      gift: selectedGift.value
     }
-  }
+  } catch (error) {
+    console.error('Error during randomization:', error)
+    // Fallback на Math.random в случае ошибки
+    const classes = Object.values(gameData[selectedGame.value].classes)
+    const gifts = Object.values(gameData[selectedGame.value].gifts)
+    const classIndex = Math.floor(Math.random() * classes.length)
+    const giftIndex = Math.floor(Math.random() * gifts.length)
+    selectedClass.value = classes[classIndex]
+    selectedGift.value = gifts[giftIndex]
 
-  animate()
+    // Запускаем анимацию прокрутки
+    isSpinning.value = true
+
+    // Ждем завершения анимации
+    await new Promise(resolve => setTimeout(resolve, 3000))
+
+    result.value = {
+      class: selectedClass.value,
+      gift: selectedGift.value
+    }
+  } finally {
+    // Останавливаем анимацию
+    isSpinning.value = false
+
+    // Добавляем небольшую задержку перед сбросом состояния загрузки
+    setTimeout(() => {
+      isLoading.value = false
+    }, 500)
+  }
 }
 </script>
 
@@ -124,12 +199,12 @@ const randomize = async () => {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 :root {
-  --primary-color: #2c3e50;
+  --primary-color: #4a6572;
   --secondary-color: #34495e;
   --text-color: #ecf0f1;
-  --background-color: #2c3e50;
-  --border-color: #34495e;
-  --hover-color: #3498db;
+  --background-color: rgba(44, 62, 80, 0.9);
+  --border-color: #5d6d7e;
+  --hover-color: #566573;
   --placeholder-color: #95a5a6;
 }
 
@@ -143,15 +218,21 @@ body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
   color: var(--text-color);
+  min-height: 100vh;
+  background-color: #2c3e50;
 }
 
 .app {
   min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  transition: background-image 0.5s ease;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  transition: background-image 0.5s ease-in-out;
 }
 
 .app::before {
@@ -161,40 +242,22 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: opacity 0.5s ease;
+  background: inherit;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  filter: blur(5px);
   z-index: -1;
-}
-
-.app.ds1::before {
-  background-image: url('/src/assets/images/ds1-bg.jpg');
-}
-
-.app.ds2::before {
-  background-image: url('/src/assets/images/ds2-bg.jpg');
-}
-
-.app.ds3::before {
-  background-image: url('/src/assets/images/ds3-bg.jpg');
-}
-
-.background-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: -1;
+  transition: background-image 0.5s ease-in-out;
 }
 
 .container {
   max-width: 1200px;
-  width: 90%;
   margin: 0 auto;
-  padding: 2rem;
+  width: 90%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   position: relative;
   z-index: 1;
 }
@@ -202,125 +265,89 @@ body {
 h1 {
   text-align: center;
   margin-bottom: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .language-selector {
   position: fixed;
   top: 1rem;
   right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  background: var(--background-color);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+}
+
+.language-selector button {
   padding: 0.5rem 1rem;
-  background: var(--primary-color);
-  border: 1px solid var(--border-color);
+  border: none;
+  background: transparent;
   color: var(--text-color);
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.3s ease;
-  z-index: 2;
 }
 
-.language-selector:hover {
-  background: var(--hover-color);
+.language-selector button.active {
+  background: var(--primary-color);
 }
 
 .game-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
   margin-bottom: 2rem;
-  text-align: center;
 }
 
-select {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background: var(--primary-color);
+.game-selector button {
+  padding: 0.8rem 1.5rem;
+  border: 2px solid var(--border-color);
+  background: var(--background-color);
   color: var(--text-color);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  cursor: pointer;
-  width: 200px;
-}
-
-select:focus {
-  outline: none;
-  border-color: var(--hover-color);
-}
-
-.no-selection {
-  text-align: center;
-  color: var(--placeholder-color);
-  margin-top: 2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.result-container {
-  margin-top: 2rem;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
-  background: rgba(44, 62, 80, 0.8);
-  padding: 2rem;
   border-radius: 8px;
-  backdrop-filter: blur(5px);
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.result-content {
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.result-content.spinning {
-  animation: spin 0.5s linear infinite;
+.game-selector button:hover {
+  background: var(--hover-color);
 }
 
-@keyframes spin {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
-}
-
-.result-item {
-  transition: all 0.3s ease;
-}
-
-.result-item.selected {
+.game-selector button.active {
   background: var(--primary-color);
-  transform: scale(1.05);
-  box-shadow: 0 0 20px var(--primary-color);
+  border-color: var(--text-color);
 }
 
 @media (max-width: 768px) {
-  .container {
+  .app {
     padding: 1rem;
+  }
+
+  .container {
+    width: 95%;
+  }
+
+  h1 {
+    font-size: 2rem;
   }
 
   .language-selector {
     position: static;
-    margin: 0 auto 1rem;
-    display: block;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  .game-selector {
+    flex-direction: column;
+    align-items: center;
   }
 
-  select {
+  .game-selector button {
     width: 100%;
-    max-width: 200px;
-  }
-
-  .result-container {
-    padding: 1rem;
+    max-width: 300px;
   }
 }
 </style>

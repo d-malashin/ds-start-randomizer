@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n'
 
 const messages = {
   en: {
-    title: 'Dark Souls Randomizer',
+    title: 'Dark Souls Start Randomizer',
     ds1: 'Dark Souls',
     ds2: 'Dark Souls II',
     ds3: 'Dark Souls III',
@@ -15,7 +15,7 @@ const messages = {
     gift: 'Gift'
   },
   ru: {
-    title: 'Рандомизатор Dark Souls',
+    title: 'Рандомизатор старта Dark Souls',
     ds1: 'Dark Souls',
     ds2: 'Dark Souls II',
     ds3: 'Dark Souls III',
@@ -31,7 +31,7 @@ const messages = {
 
 export const i18n = createI18n({
   legacy: false,
-  locale: 'en',
+  locale: 'ru',
   fallbackLocale: 'en',
   messages
 })
