@@ -1,5 +1,12 @@
 <template>
   <div class="app" :style="{ background: backgroundColor, backgroundImage: backgroundImage }">
+    <!-- Preload background images -->
+    <div style="display: none;">
+      <img :src="ds1Bg" alt=""/>
+      <img :src="ds2Bg" alt=""/>
+      <img :src="ds3Bg" alt=""/>
+    </div>
+
     <div class="container">
       <h1 class="title">{{ t('title') }}</h1>
 
