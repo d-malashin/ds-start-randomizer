@@ -71,33 +71,52 @@ const toggleLanguage = () => {
 }
 
 const randomize = async () => {
+  if (!gameData.value[selectedGame.value]) return
+
   isLoading.value = true
   selectedClass.value = null
   selectedGift.value = null
 
-  try {
-    const gameVersion = gameData[selectedGame.value]
-    const classes = Object.entries(gameVersion.classes)
-    const gifts = Object.entries(gameVersion.gifts)
+  // Запускаем анимацию рулетки
+  const spinDuration = 3000 // 3 секунды
+  const startTime = Date.now()
 
-    const [classIndex, giftIndex] = await Promise.all([
-      getRandomNumber(0, classes.length - 1),
-      getRandomNumber(0, gifts.length - 1)
-    ])
-
-    const randomClass = classes[classIndex][1]
-    const randomGift = gifts[giftIndex][1]
-
-    // Добавляем небольшую задержку для лучшего UX
-    await new Promise(resolve => setTimeout(resolve, 300))
-
-    selectedClass.value = randomClass
-    selectedGift.value = randomGift
-  } catch (error) {
-    console.error('Error during randomization:', error)
-  } finally {
-    isLoading.value = false
+  // Функция для получения случайного элемента из массива
+  const getRandomItem = (array) => {
+    const randomIndex = Math.floor(Math.random() * array.length)
+    return array[randomIndex]
   }
+
+  // Анимация прокрутки
+  const animate = () => {
+    const elapsed = Date.now() - startTime
+    const progress = Math.min(elapsed / spinDuration, 1)
+
+    // Плавное замедление
+    const easeOut = 1 - Math.pow(1 - progress, 3)
+
+    if (progress < 1) {
+      // Продолжаем анимацию
+      selectedClass.value = getRandomItem(Object.values(gameData.value[selectedGame.value].classes))
+      selectedGift.value = getRandomItem(Object.values(gameData.value[selectedGame.value].gifts))
+      requestAnimationFrame(animate)
+    } else {
+      // Завершаем анимацию и выбираем финальные значения через random.org
+      const classes = Object.values(gameData.value[selectedGame.value].classes)
+      const gifts = Object.values(gameData.value[selectedGame.value].gifts)
+
+      Promise.all([
+        getRandomNumber(0, classes.length - 1),
+        getRandomNumber(0, gifts.length - 1)
+      ]).then(([classIndex, giftIndex]) => {
+        selectedClass.value = classes[classIndex]
+        selectedGift.value = gifts[giftIndex]
+        isLoading.value = false
+      })
+    }
+  }
+
+  animate()
 }
 </script>
 
@@ -249,6 +268,35 @@ select:focus {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.result-content {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.result-content.spinning {
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.result-item {
+  transition: all 0.3s ease;
+}
+
+.result-item.selected {
+  background: var(--primary-color);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--primary-color);
 }
 
 @media (max-width: 768px) {

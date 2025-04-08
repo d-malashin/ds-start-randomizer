@@ -1,107 +1,130 @@
 <template>
-  <div class="random-result">
-    <div v-if="selectedClass" class="result-item">
-      <h3>{{ t('class') }}</h3>
-      <div class="item-card">
-        <h4>{{ selectedClass[currentLocale] }}</h4>
-        <p>{{ selectedClass.description[currentLocale] }}</p>
+  <div class="random-result" v-if="gameVersion">
+    <div class="result-container">
+      <div class="result-section">
+        <h3>{{ t('class') }}</h3>
+        <div class="result-content" :class="{ 'spinning': isSpinning }">
+          <div class="result-item" v-for="(cls, index) in gameData[gameVersion].classes"
+               :key="cls.id"
+               :class="{ 'selected': selectedClass && selectedClass.id === cls.id }">
+            <h4>{{ cls.name[locale] }}</h4>
+            <p>{{ cls.description[locale] }}</p>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div v-if="selectedGift" class="result-item">
-      <h3>{{ t('gift') }}</h3>
-      <div class="item-card">
-        <h4>{{ selectedGift[currentLocale] }}</h4>
-        <p>{{ selectedGift.description[currentLocale] }}</p>
+      <div class="result-section">
+        <h3>{{ t('gift') }}</h3>
+        <div class="result-content" :class="{ 'spinning': isSpinning }">
+          <div class="result-item" v-for="(gift, index) in gameData[gameVersion].gifts"
+               :key="gift.id"
+               :class="{ 'selected': selectedGift && selectedGift.id === gift.id }">
+            <h4>{{ gift.name[locale] }}</h4>
+            <p>{{ gift.description[locale] }}</p>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div v-if="!selectedClass && !selectedGift" class="placeholder">
-      <p>{{ t('noSelection') }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { gameData } from '../data/gameData'
+
+const props = defineProps({
+  gameVersion: String,
+  selectedClass: Object,
+  selectedGift: Object,
+  isSpinning: Boolean
+})
 
 const { t, locale } = useI18n()
-const currentLocale = locale
-
-defineProps({
-  selectedClass: {
-    type: Object,
-    default: null
-  },
-  selectedGift: {
-    type: Object,
-    default: null
-  }
-})
 </script>
 
 <style scoped>
 .random-result {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.result-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-bottom: 2rem;
+}
+
+.result-section {
+  text-align: center;
+}
+
+.result-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
 }
 
 .result-item {
-  background: var(--background-color);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.item-card {
-  background: var(--secondary-color);
-  border-radius: 6px;
   padding: 1rem;
-  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
-h3 {
+.result-item.selected {
+  background: var(--primary-color);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--primary-color);
+}
+
+.result-item h4 {
   color: var(--text-color);
-  font-size: 1.5rem;
-  margin: 0;
-}
-
-h4 {
-  color: var(--primary-color);
+  margin-bottom: 0.5rem;
   font-size: 1.2rem;
-  margin: 0 0 0.5rem 0;
 }
 
-p {
+.result-item p {
   color: var(--text-color);
-  margin: 0;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
-.placeholder {
-  text-align: center;
-  padding: 2rem;
-  color: var(--placeholder-color);
-  font-style: italic;
+.spinning .result-item {
+  animation: spin 0.5s linear infinite;
 }
 
-@media (max-width: 768px) {
-  .result-item {
-    padding: 1rem;
+@keyframes spin {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@media (min-width: 768px) {
+  .result-container {
+    flex-direction: row;
   }
 
-  .item-card {
-    padding: 0.8rem;
-  }
-
-  h3 {
-    font-size: 1.3rem;
-  }
-
-  h4 {
-    font-size: 1.1rem;
+  .result-section {
+    flex: 1;
   }
 }
 </style>
