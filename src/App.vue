@@ -310,7 +310,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.6rem;
 }
 
 .game-selector button {

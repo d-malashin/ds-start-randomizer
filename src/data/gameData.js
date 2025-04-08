@@ -83,62 +83,70 @@ export const gameData = {
       }
     },
     gifts: {
-      masterKey: {
-        en: 'Master Key',
-        ru: 'Главный Ключ',
+      divineBlessing: {
+        en: 'Divine Blessing',
+        ru: 'Благословение Богини',
         description: {
-          en: 'A key that opens any basic lock. Allows access to many areas from the start.',
-          ru: 'Ключ, открывающий любые простые замки. Позволяет получить доступ ко многим областям с самого начала.'
+          en: 'Fully restores HP and cures all status effects. Extremely rare.',
+          ru: 'Полностью восстанавливает здоровье и лечит все эффекты статусов. Чрезвычайно редкое.'
         }
       },
       blackFirebomb: {
         en: 'Black Firebomb',
         ru: 'Чёрная Огненная Бомба',
         description: {
-          en: 'Powerful explosive that deals heavy fire damage. Can be used to defeat the Asylum Demon early.',
-          ru: 'Мощная взрывчатка, наносящая серьёзный огненный урон. Можно использовать для раннего убийства Демона Убежища.'
+          en: 'Deals massive fire damage. Can kill Asylum Demon instantly.',
+          ru: 'Наносит огромный огненный урон. Может мгновенно убить Демона Убежища.'
         }
       },
       twinHumanities: {
         en: 'Twin Humanities',
-        ru: 'Близнецы-Человечности',
+        ru: 'Двойная Человечность',
         description: {
-          en: 'Two humanities that can be used to reverse hollowing or kindle bonfires.',
-          ru: 'Две человечности, которые можно использовать для отмены опустошения или разжигания костров.'
+          en: 'Two humanity items for kindling bonfires or reversing hollowing.',
+          ru: 'Две человечности для разжигания костров или отмены опустошения.'
+        }
+      },
+      binoculars: {
+        en: 'Binoculars',
+        ru: 'Бинокль',
+        description: {
+          en: 'Allows zooming for ranged targeting. Found early in Undead Burg.',
+          ru: 'Позволяет приближать цель для дальних атак. Можно рано найти в Нежилой Крепости.'
         }
       },
       pendant: {
         en: 'Pendant',
-        ru: 'Кулон',
+        ru: 'Медальон',
         description: {
-          en: 'A simple pendant with no effect. Perhaps it has some hidden meaning...',
-          ru: 'Простой кулон без эффекта. Возможно, он имеет скрытый смысл...'
+          en: 'No gameplay effect. Originally intended for DLC access.',
+          ru: 'Не имеет игрового эффекта. Изначально предназначался для доступа к DLC.'
         }
       },
-      tinyBeingsRing: {
-        en: 'Tiny Being\'s Ring',
-        ru: 'Кольцо Крошечного Существа',
+      masterKey: {
+        en: 'Master Key',
+        ru: 'Отмычка',
         description: {
-          en: 'A ring that slightly boosts maximum HP. Useful for surviving early encounters.',
-          ru: 'Кольцо, немного увеличивающее максимальное здоровье. Полезно для выживания в ранних столкновениях.'
+          en: 'Unlocks many doors including shortcuts to Blighttown and Valley of Drakes.',
+          ru: 'Открывает многие двери, включая короткие пути в Гнилой Город и Долину Дрейков.'
+        }
+      },
+      tinyBeingRing: {
+        en: 'Tiny Being\'s Ring',
+        ru: 'Кольцо Крохотного Существа',
+        description: {
+          en: 'Boosts max HP by 5%. Can be obtained later from Lautrec.',
+          ru: 'Увеличивает максимальное здоровье на 5%. Можно получить позже у Лотрека.'
         }
       },
       oldWitchRing: {
         en: 'Old Witch\'s Ring',
         ru: 'Кольцо Старой Ведьмы',
         description: {
-          en: 'A ring that allows communication with Quelana of Izalith.',
-          ru: 'Кольцо, позволяющее общаться с Квелагой из Изалита.'
+          en: 'Allows communication with Quelana of Izalith. Key story item.',
+          ru: 'Позволяет общаться с Квелагой из Изалита. Важный сюжетный предмет.'
         }
       },
-      divineBlessing: {
-        en: 'Divine Blessing',
-        ru: 'Божественное Благословение',
-        description: {
-          en: 'Holy water that fully restores HP and cures all ailments. Extremely rare.',
-          ru: 'Святая вода, полностью восстанавливающая здоровье и исцеляющая все недуги. Чрезвычайно редка.'
-        }
-      }
     }
   }, ds2: {
     classes: {

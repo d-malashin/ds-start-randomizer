@@ -1,17 +1,12 @@
 <template>
-  <div class="random-result" v-if="selectedGame">
+  <div class="random-result" v-if="selectedGame" :class="{ 'ds2': selectedGame === 'ds2' }">
     <div class="result-container">
       <div class="result-item">
         <h3>{{ t('class') }}</h3>
         <div class="items-list">
-          <div
-            v-for="(item, index) in classes"
-            :key="item.en"
-            class="item"
-            :class="{
-              'highlighted': highlightIndex === index
-            }"
-          >
+          <div v-for="(item, index) in classes" :key="item.en" class="item" :class="{
+            'highlighted': highlightIndex === index
+          }">
             {{ getItemName(item) }}
           </div>
         </div>
@@ -20,14 +15,9 @@
       <div class="result-item">
         <h3>{{ t('gift') }}</h3>
         <div class="items-list">
-          <div
-            v-for="(item, index) in gifts"
-            :key="item.en"
-            class="item"
-            :class="{
-              'highlighted': highlightGiftIndex === index
-            }"
-          >
+          <div v-for="(item, index) in gifts" :key="item.en" class="item" :class="{
+            'highlighted': highlightGiftIndex === index
+          }">
             {{ getItemName(item) }}
           </div>
         </div>
@@ -116,6 +106,11 @@ watch(() => props.isSpinning, (newValue) => {
         clearInterval(spinInterval.value)
         highlightIndex.value = targetClassIndex
         highlightGiftIndex.value = targetGiftIndex
+
+        // Прокручиваем к выбранным элементам
+        setTimeout(() => {
+          scrollToHighlightedItems()
+        }, 100)
       }
     }, 100) // Скорость вращения
   } else {
@@ -130,6 +125,11 @@ watch(() => props.isSpinning, (newValue) => {
 
       highlightIndex.value = gameClasses.findIndex(c => c.en === props.selectedClass.en)
       highlightGiftIndex.value = gameGifts.findIndex(g => g.en === props.selectedGift.en)
+
+      // Прокручиваем к выбранным элементам
+      setTimeout(() => {
+        scrollToHighlightedItems()
+      }, 100)
     } else {
       highlightIndex.value = -1
       highlightGiftIndex.value = -1
@@ -137,8 +137,38 @@ watch(() => props.isSpinning, (newValue) => {
   }
 })
 
+// Функция для прокрутки к выбранным элементам
+const scrollToHighlightedItems = () => {
+  // Находим все элементы списка
+  const classItems = document.querySelectorAll('.result-item:first-child .item')
+  const giftItems = document.querySelectorAll('.result-item:last-child .item')
+
+  // Прокручиваем к выбранному классу
+  if (highlightIndex.value >= 0 && classItems[highlightIndex.value]) {
+    classItems[highlightIndex.value].scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+  }
+
+  // Прокручиваем к выбранному подарку
+  if (highlightGiftIndex.value >= 0 && giftItems[highlightGiftIndex.value]) {
+    giftItems[highlightGiftIndex.value].scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+  }
+}
+
 watch(() => locale.value, (newValue) => {
   currentLanguage.value = newValue
+})
+
+watch(() => props.selectedGame, (newValue) => {
+  if (newValue) {
+    highlightIndex.value = -1
+    highlightGiftIndex.value = -1
+  }
 })
 </script>
 
@@ -149,13 +179,21 @@ watch(() => locale.value, (newValue) => {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   backdrop-filter: blur(10px);
+  height: calc(100vh - 400px);
+  overflow: hidden;
+  max-height: 675px;
+}
+
+.random-result.ds2 {
+  max-height: 500px;
 }
 
 .result-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .result-item {
@@ -178,7 +216,7 @@ watch(() => locale.value, (newValue) => {
   flex-direction: column;
   gap: 0.75rem;
   margin: 0;
-  padding: 0;
+  padding: 0 0 2px;
   list-style: none;
   overflow-x: hidden;
   overflow-y: auto;

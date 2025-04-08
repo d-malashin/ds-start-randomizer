@@ -40,7 +40,7 @@ defineEmits(['randomize'])
 <style scoped>
 .randomize-button-container {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 0.6rem;
 }
 
 .randomize-button {
