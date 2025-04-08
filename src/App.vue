@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import RandomizeButton from './components/RandomizeButton.vue'
 import RandomResult from './components/RandomResult.vue'
@@ -63,7 +63,12 @@ import ds2Bg from './assets/images/ds2-bg.jpg'
 import ds3Bg from './assets/images/ds3-bg.jpg'
 
 const { t, locale } = useI18n()
-const currentLanguage = ref(locale.value)
+
+// Загружаем язык из localStorage или используем 'en' по умолчанию
+const savedLanguage = localStorage.getItem('appLanguage') || 'en'
+const currentLanguage = ref(savedLanguage)
+locale.value = savedLanguage
+
 const selectedGame = ref(null)
 const selectedClass = ref(null)
 const selectedGift = ref(null)
@@ -103,9 +108,16 @@ const backgroundImage = computed(() => {
   }
 })
 
+onMounted(() => {
+  // Устанавливаем начальный язык
+  locale.value = currentLanguage.value
+})
+
 const toggleLanguage = () => {
   currentLanguage.value = currentLanguage.value === 'en' ? 'ru' : 'en'
   locale.value = currentLanguage.value
+  // Сохраняем выбранный язык в localStorage
+  localStorage.setItem('appLanguage', currentLanguage.value)
 }
 
 const selectGame = (gameId) => {
