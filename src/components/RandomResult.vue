@@ -185,7 +185,7 @@ watch(() => props.selectedGame, (newValue) => {
 }
 
 .random-result.ds2 {
-  max-height: 500px;
+  max-height: 555px;
 }
 
 .result-container {
