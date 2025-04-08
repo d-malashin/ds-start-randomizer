@@ -2,6 +2,7 @@
   <div class="app" :style="{ backgroundImage: `url(${backgroundImage})` }">
     <div class="container">
       <h1>{{ t('title') }}</h1>
+      <h1 class="subtitle">{{ t('subtitle') }}</h1>
 
       <div class="language-selector">
         <select v-model="currentLocale" @change="changeLocale">
@@ -11,7 +12,7 @@
       </div>
 
       <h2>{{ t('selectGame') }}</h2>
-      <select v-model="selectedGame">
+      <select v-model="selectedGame" @change="resetSelection">
         <option value="ds1">{{ t('games.ds1') }}</option>
         <option value="ds2">{{ t('games.ds2') }}</option>
         <option value="ds3">{{ t('games.ds3') }}</option>
@@ -22,11 +23,15 @@
       <div class="result" v-if="selectedClass || selectedGift">
         <div class="class-info" v-if="selectedClass">
           <h3>{{ t('selectedClass') }}</h3>
-          <p>{{ selectedClass }}</p>
+          <div class="selection-box">
+            <p>{{ selectedClass }}</p>
+          </div>
         </div>
         <div class="gift-info" v-if="selectedGift">
           <h3>{{ t('selectedGift') }}</h3>
-          <p>{{ selectedGift }}</p>
+          <div class="selection-box">
+            <p>{{ selectedGift }}</p>
+          </div>
         </div>
       </div>
       <div class="result" v-else>
@@ -61,6 +66,11 @@ const changeLocale = () => {
   locale.value = currentLocale.value
 }
 
+const resetSelection = () => {
+  selectedClass.value = ''
+  selectedGift.value = ''
+}
+
 const randomize = () => {
   const game = gameData[selectedGame.value]
   const classes = Object.keys(game.classes)
@@ -82,6 +92,8 @@ const randomize = () => {
   --border-color: #444444;
   --hover-color: #666666;
   --placeholder-color: #aaaaaa;
+  --selection-bg: rgba(0, 0, 0, 0.6);
+  --selection-border: #777777;
 }
 
 * {
@@ -136,11 +148,17 @@ body {
 h1 {
   text-align: center;
   color: var(--text-color);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-weight: 500;
   letter-spacing: 0.5px;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
 }
 
 h2 {
@@ -208,6 +226,21 @@ select:focus {
   margin-bottom: 1.5rem;
 }
 
+.selection-box {
+  background-color: var(--selection-bg);
+  border: 1px solid var(--selection-border);
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.selection-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 .placeholder {
   font-style: italic;
   color: var(--placeholder-color);
@@ -221,12 +254,13 @@ select:focus {
   background-color: rgba(51, 51, 51, 0.8);
   padding: 0.5rem;
   border-radius: 4px;
-  border: 1px solid var(--border-color);
 }
 
 .language-selector select {
   width: auto;
   margin-bottom: 0;
+  border: none;
+  background-color: transparent;
 }
 
 @media (max-width: 767px) {
@@ -243,11 +277,14 @@ select:focus {
     font-size: 2rem;
   }
 
+  .subtitle {
+    font-size: 1.5rem;
+  }
+
   .language-selector {
     position: static;
     margin-bottom: 1rem;
     background-color: transparent;
-    border: none;
     padding: 0;
   }
 

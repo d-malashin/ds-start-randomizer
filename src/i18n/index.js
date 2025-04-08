@@ -2,7 +2,8 @@ import { createI18n } from 'vue-i18n'
 
 const messages = {
   en: {
-    title: 'Dark Souls Starting Class Randomizer',
+    title: 'Dark Souls',
+    subtitle: 'Start Randomizer',
     selectGame: 'Select Game Version',
     games: {
       ds1: 'Dark Souls',
@@ -15,7 +16,8 @@ const messages = {
     clickRandomize: 'Click "Randomize" to get your starting class and gift'
   },
   ru: {
-    title: 'Рандомизатор начальных классов Dark Souls',
+    title: 'Dark Souls',
+    subtitle: 'Рандомизатор старта',
     selectGame: 'Выберите версию игры',
     games: {
       ds1: 'Dark Souls',
