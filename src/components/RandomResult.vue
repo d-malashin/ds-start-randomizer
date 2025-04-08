@@ -9,7 +9,7 @@
             :key="item.en"
             class="item"
             :class="{
-              'highlight': highlightIndex === index
+              'highlighted': highlightIndex === index
             }"
           >
             {{ getItemName(item) }}
@@ -25,7 +25,7 @@
             :key="item.en"
             class="item"
             :class="{
-              'highlight': highlightGiftIndex === index
+              'highlighted': highlightGiftIndex === index
             }"
           >
             {{ getItemName(item) }}
@@ -144,8 +144,8 @@ watch(() => locale.value, (newValue) => {
 
 <style scoped>
 .random-result {
-  margin-top: 2rem;
-  padding: 2rem;
+  margin-top: 1rem;
+  padding: 1.5rem;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   backdrop-filter: blur(10px);
@@ -154,7 +154,8 @@ watch(() => locale.value, (newValue) => {
 .result-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
+  min-height: 0;
 }
 
 .result-item {
@@ -162,83 +163,79 @@ watch(() => locale.value, (newValue) => {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
 }
 
 .result-item h3 {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .items-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  max-height: calc(100vh - 500px);
-  overflow-y: auto;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   overflow-x: hidden;
+  overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--border-color) var(--background-color);
-  padding-right: 8px;
-  position: relative;
+  scrollbar-color: rgba(255, 215, 0, 0.3) rgba(0, 0, 0, 0.5);
+  padding-right: 4px;
+  min-height: 0;
+  flex: 1;
 }
 
 .items-list::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 .items-list::-webkit-scrollbar-track {
-  background: var(--background-color);
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
 }
 
 .items-list::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
+  background: rgba(255, 215, 0, 0.3);
+  border-radius: 2px;
 }
 
 .items-list::-webkit-scrollbar-thumb:hover {
-  background: var(--hover-color);
+  background: rgba(255, 215, 0, 0.5);
 }
 
 .item {
-  padding: 0.8rem;
-  background: var(--background-color);
+  padding: 0.75rem;
   border-radius: 8px;
-  border: 2px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
-  text-align: center;
-  font-weight: 500;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
+  font-size: 0.95rem;
+  transform-origin: center;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.item.highlight {
-  border-color: var(--primary-color);
-  background: var(--primary-color);
-  color: var(--text-color);
-  font-weight: 700;
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(74, 101, 114, 0.9);
-  opacity: 1;
-  z-index: 1;
+.item.highlighted {
+  background: rgba(255, 215, 0, 0.15);
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
   position: relative;
-  margin-bottom: 0.5rem;
+  z-index: 1;
+  border-radius: 0;
 }
 
 @media (max-width: 768px) {
   .result-container {
     grid-template-columns: 1fr;
-  }
-
-  .items-list {
-    max-height: 300px;
   }
 }
 </style>

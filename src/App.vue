@@ -1,7 +1,7 @@
 <template>
   <div class="app" :style="{ background: backgroundColor, backgroundImage: backgroundImage }">
     <div class="container">
-      <h1>{{ t('title') }}</h1>
+      <h1 class="title">{{ t('title') }}</h1>
 
       <div class="language-selector">
         <button
@@ -156,7 +156,7 @@ const randomize = async () => {
     isSpinning.value = true
 
     // Ждем завершения анимации
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     // Устанавливаем результат
     result.value = {
@@ -177,7 +177,7 @@ const randomize = async () => {
     isSpinning.value = true
 
     // Ждем завершения анимации
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     result.value = {
       class: selectedClass.value,
@@ -262,11 +262,22 @@ body {
   z-index: 1;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
+.title {
   font-size: 2.5rem;
   font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  display: inline-block;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .language-selector {
@@ -330,8 +341,9 @@ h1 {
     width: 95%;
   }
 
-  h1 {
-    font-size: 2rem;
+  .title {
+    font-size: 1.8rem;
+    padding: 0.75rem 1.5rem;
   }
 
   .language-selector {
