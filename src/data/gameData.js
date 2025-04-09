@@ -91,6 +91,14 @@ export const gameData = {
           ru: 'Полностью восстанавливает здоровье и лечит все эффекты статусов. Чрезвычайно редкое.'
         }
       },
+      divineBlessing: {
+        en: 'Divine Blessing',
+        ru: 'Благословение Богини',
+        description: {
+          en: 'Fully restores HP and cures all status effects. Extremely rare.',
+          ru: 'Полностью восстанавливает здоровье и лечит все эффекты статусов. Чрезвычайно редкое.'
+        }
+      },
       blackFirebomb: {
         en: 'Black Firebomb',
         ru: 'Чёрная Огненная Бомба',

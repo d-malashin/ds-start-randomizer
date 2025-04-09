@@ -47,13 +47,15 @@
         :selected-class="selectedClass"
         :selected-gift="selectedGift"
         :is-spinning="isSpinning"
+        :sound-enabled="soundEnabled"
+        @update:sound-enabled="soundEnabled = $event"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import RandomizeButton from './components/RandomizeButton.vue'
 import RandomResult from './components/RandomResult.vue'
@@ -75,6 +77,7 @@ const selectedGift = ref(null)
 const isLoading = ref(false)
 const result = ref(null)
 const isSpinning = ref(false)
+const soundEnabled = ref(localStorage.getItem('soundEnabled') === 'true' || localStorage.getItem('soundEnabled') === null)
 
 const games = [
   { id: 'ds1', name: 'Dark Souls' },
@@ -212,6 +215,11 @@ const randomize = async () => {
     }, 500)
   }
 }
+
+// Сохраняем состояние звуковых эффектов
+watch(soundEnabled, (newValue) => {
+  localStorage.setItem('soundEnabled', newValue)
+})
 </script>
 
 <style>

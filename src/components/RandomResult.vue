@@ -1,5 +1,15 @@
 <template>
   <div class="random-result" v-if="selectedGame" :class="{ 'ds2': selectedGame === 'ds2' }">
+    <div class="sound-toggle">
+      <label>
+        <input
+          type="checkbox"
+          :checked="soundEnabled"
+          @change="emit('update:soundEnabled', $event.target.checked)"
+        >
+        {{ t('sound_effects') }}
+      </label>
+    </div>
     <div class="result-container">
       <div class="result-item">
         <h3>{{ t('class') }}</h3>
@@ -32,6 +42,11 @@
 import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gameData } from '../data/gameData'
+import sound1 from '/sounds/sound1.mp3'
+import sound2 from '/sounds/sound2.mp3'
+import sound3 from '/sounds/sound3.mp3'
+import sound4 from '/sounds/sound4.mp3'
+
 
 const props = defineProps({
   selectedGame: {
@@ -49,14 +64,21 @@ const props = defineProps({
   isSpinning: {
     type: Boolean,
     default: false
+  },
+  soundEnabled: {
+    type: Boolean,
+    default: false
   }
 })
+
+const emit = defineEmits(['update:soundEnabled'])
 
 const { t, locale } = useI18n()
 const currentLanguage = ref(locale.value)
 const highlightIndex = ref(-1)
 const highlightGiftIndex = ref(-1)
 const spinInterval = ref(null)
+const currentAudio = ref(null)
 
 const classes = computed(() => {
   if (!props.selectedGame) return []
@@ -80,19 +102,46 @@ const scrollToHighlightedItems = () => {
 
   // Прокручиваем к выбранному классу
   if (highlightIndex.value >= 0 && classItems[highlightIndex.value]) {
-    classItems[highlightIndex.value].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    })
+    const classList = classItems[highlightIndex.value].closest('.items-list')
+    if (classList) {
+      classList.scrollTop = classItems[highlightIndex.value].offsetTop - (classList.clientHeight / 2) + (classItems[highlightIndex.value].clientHeight / 2)
+    }
   }
 
   // Прокручиваем к выбранному подарку
   if (highlightGiftIndex.value >= 0 && giftItems[highlightGiftIndex.value]) {
-    giftItems[highlightGiftIndex.value].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    })
+    const giftList = giftItems[highlightGiftIndex.value].closest('.items-list')
+    if (giftList) {
+      giftList.scrollTop = giftItems[highlightGiftIndex.value].offsetTop - (giftList.clientHeight / 2) + (giftItems[highlightGiftIndex.value].clientHeight / 2)
+    }
   }
+}
+
+// Функция для воспроизведения случайного звука
+const playRandomSound = () => {
+  if (!props.soundEnabled) return
+
+  // Останавливаем предыдущий звук, если он есть
+  if (currentAudio.value) {
+    currentAudio.value.pause()
+    currentAudio.value.currentTime = 0
+    currentAudio.value = null
+  }
+
+  const sounds = [sound1, sound2, sound3, sound4]
+  const randomSound = sounds[Math.floor(Math.random() * sounds.length)]
+  const audio = new Audio(randomSound)
+  currentAudio.value = audio
+
+  // Добавляем обработку ошибок
+  audio.onerror = () => {
+    console.warn('Failed to play sound:', randomSound)
+  }
+
+  // Пробуем воспроизвести звук
+  audio.play().catch(error => {
+    console.warn('Error playing sound:', error)
+  })
 }
 
 watch(() => props.isSpinning, (newValue) => {
@@ -135,7 +184,10 @@ watch(() => props.isSpinning, (newValue) => {
     // Если у нас есть выбранные значения, прокручиваем к ним
     if (props.selectedClass && props.selectedGift) {
       // Даем время на обновление DOM
-      setTimeout(scrollToHighlightedItems, 100)
+      setTimeout(() => {
+        scrollToHighlightedItems()
+        playRandomSound()
+      }, 100)
     }
   }
 })
@@ -157,6 +209,16 @@ watch([() => props.selectedClass, () => props.selectedGift], ([newClass, newGift
     setTimeout(scrollToHighlightedItems, 100)
   }
 })
+
+// Следим за изменением состояния звуковых эффектов
+watch(() => props.soundEnabled, (newValue) => {
+  if (!newValue && currentAudio.value) {
+    // Если звуковые эффекты выключены и есть активный аудио элемент, останавливаем его
+    currentAudio.value.pause()
+    currentAudio.value.currentTime = 0
+    currentAudio.value = null
+  }
+})
 </script>
 
 <style scoped>
@@ -168,7 +230,8 @@ watch([() => props.selectedClass, () => props.selectedGift], ([newClass, newGift
   backdrop-filter: blur(10px);
   height: calc(100vh - 300px);
   overflow: hidden;
-  max-height: 560px;
+  max-height: 580px;
+  position: relative;
 }
 
 .random-result.ds2 {
@@ -189,6 +252,9 @@ watch([() => props.selectedClass, () => props.selectedGift], ([newClass, newGift
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  overflow: hidden;
+  height: calc(100% - 1rem); /* Вычитаем отступ между колонками */
+  max-height: calc(100% - 1rem);
 }
 
 .result-item h3 {
@@ -212,6 +278,8 @@ watch([() => props.selectedClass, () => props.selectedGift], ([newClass, newGift
   padding-right: 4px;
   min-height: 0;
   flex: 1;
+  height: calc(100% - 1.6rem); /* Вычитаем высоту заголовка (1.1rem) + отступ (0.5rem) */
+  max-height: calc(100% - 1.6rem);
 }
 
 .items-list::-webkit-scrollbar {
@@ -277,5 +345,26 @@ watch([() => props.selectedClass, () => props.selectedGift], ([newClass, newGift
   .result-container {
     grid-template-columns: 1fr;
   }
+}
+
+.sound-toggle {
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.sound-toggle label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: rgba(255, 215, 0, 0.7);
+}
+
+.sound-toggle input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
 }
 </style>

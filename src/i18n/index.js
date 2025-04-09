@@ -12,7 +12,8 @@ const messages = {
     noSelection: 'Click the button above to randomize your starting class and gift',
     clickRandomize: 'Click the button above to randomize your starting class and gift',
     class: 'Class',
-    gift: 'Gift'
+    gift: 'Gift',
+    sound_effects: 'Sound Effects'
   },
   ru: {
     title: 'Рандомизатор старта Dark Souls',
@@ -25,7 +26,8 @@ const messages = {
     noSelection: 'Нажмите кнопку выше, чтобы рандомизировать начальный класс и подарок',
     clickRandomize: 'Нажмите кнопку выше, чтобы рандомизировать начальный класс и подарок',
     class: 'Класс',
-    gift: 'Дар'
+    gift: 'Дар',
+    sound_effects: 'Звуковые эффекты'
   }
 }
 
