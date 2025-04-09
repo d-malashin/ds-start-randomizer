@@ -74,10 +74,25 @@ const getItemName = (item) => {
 }
 
 const scrollToHighlightedItems = () => {
-  const highlightedItems = document.querySelectorAll('.item.highlighted')
-  highlightedItems.forEach(item => {
-    item.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  })
+  // Находим все элементы списка
+  const classItems = document.querySelectorAll('.result-item:first-child .items-list .item')
+  const giftItems = document.querySelectorAll('.result-item:last-child .items-list .item')
+
+  // Прокручиваем к выбранному классу
+  if (highlightIndex.value >= 0 && classItems[highlightIndex.value]) {
+    classItems[highlightIndex.value].scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+  }
+
+  // Прокручиваем к выбранному подарку
+  if (highlightGiftIndex.value >= 0 && giftItems[highlightGiftIndex.value]) {
+    giftItems[highlightGiftIndex.value].scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+  }
 }
 
 watch(() => props.isSpinning, (newValue) => {
@@ -109,17 +124,18 @@ watch(() => props.isSpinning, (newValue) => {
         highlightIndex.value = targetClassIndex
         highlightGiftIndex.value = targetGiftIndex
         clearInterval(spinInterval.value)
-
-        // Прокручиваем к выбранным элементам
-        setTimeout(() => {
-          scrollToHighlightedItems()
-        }, 100)
       }
-    }, 50) // Уменьшаем интервал для более быстрой анимации
+    }, 50)
   } else {
-    // Если анимация остановлена, очищаем интервал
+    // Если анимация остановлена
     if (spinInterval.value) {
       clearInterval(spinInterval.value)
+    }
+
+    // Если у нас есть выбранные значения, прокручиваем к ним
+    if (props.selectedClass && props.selectedGift) {
+      // Даем время на обновление DOM
+      setTimeout(scrollToHighlightedItems, 100)
     }
   }
 })
@@ -134,18 +150,25 @@ watch(() => props.selectedGame, (newValue) => {
     highlightGiftIndex.value = -1
   }
 })
+
+// Следим за изменением выбранных значений
+watch([() => props.selectedClass, () => props.selectedGift], ([newClass, newGift]) => {
+  if (newClass && newGift && !props.isSpinning) {
+    setTimeout(scrollToHighlightedItems, 100)
+  }
+})
 </script>
 
 <style scoped>
 .random-result {
-  margin-top: 1rem;
-  padding: 1.5rem;
+  margin-top: 0.5rem;
+  padding: 1rem;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  height: calc(100vh - 400px);
+  height: calc(100vh - 300px);
   overflow: hidden;
-  max-height: 675px;
+  max-height: 560px;
 }
 
 .random-result.ds2 {
@@ -155,7 +178,7 @@ watch(() => props.selectedGame, (newValue) => {
 .result-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
   height: 100%;
   overflow: hidden;
 }
@@ -169,7 +192,7 @@ watch(() => props.selectedGame, (newValue) => {
 }
 
 .result-item h3 {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-size: 1.1rem;
   font-weight: 500;
   flex-shrink: 0;
@@ -178,7 +201,7 @@ watch(() => props.selectedGame, (newValue) => {
 .items-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   margin: 0;
   padding: 0 0 2px;
   list-style: none;
@@ -210,7 +233,7 @@ watch(() => props.selectedGame, (newValue) => {
 }
 
 .item {
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
@@ -220,7 +243,7 @@ watch(() => props.selectedGame, (newValue) => {
   margin: 0;
   font-size: 0.95rem;
   transform-origin: center;
-  min-height: 2.5rem;
+  min-height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
