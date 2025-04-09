@@ -51,6 +51,11 @@
         @update:sound-enabled="soundEnabled = $event"
       />
     </div>
+    <footer class="footer">
+      <a href="https://github.com/d-malashin/ds-start-randomizer" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+    </footer>
   </div>
 </template>
 
@@ -388,5 +393,25 @@ body {
     width: 100%;
     max-width: 300px;
   }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.footer a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #3498db;
 }
 </style>

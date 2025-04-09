@@ -1,6 +1,6 @@
 # Dark Souls Start Randomizer
 
-![Dark Souls Start Randomizer](https://d-malashin.github.io/ds-start-randomizer/ds1-preview.png)
+![Dark Souls Start Randomizer](https://raw.githubusercontent.com/d-malashin/ds-start-randomizer/refs/heads/main/public/images/ds1-preview.jpg)
 
 ## English
 
