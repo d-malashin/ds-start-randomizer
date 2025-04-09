@@ -85,54 +85,27 @@ watch(() => props.isSpinning, (newValue) => {
     const targetClassIndex = gameClasses.findIndex(c => c.en === props.selectedClass?.en)
     const targetGiftIndex = gameGifts.findIndex(g => g.en === props.selectedGift?.en)
 
-    // Начинаем с первого элемента
-    highlightIndex.value = 0
-    highlightGiftIndex.value = 0
-
     let currentStep = 0
-    const totalSpins = 3 // Количество полных оборотов
-    const stepsPerSpin = Math.max(gameClasses.length, gameGifts.length) // Количество шагов на один оборот
-    const totalSteps = totalSpins * stepsPerSpin + targetClassIndex // Общее количество шагов + индекс выбранного класса
+    const totalSteps = 40 // Общее количество шагов анимации
 
     // Запускаем анимацию
     spinInterval.value = setInterval(() => {
       if (currentStep < totalSteps) {
-        // Последовательно прокручиваем варианты
-        highlightIndex.value = (highlightIndex.value + 1) % gameClasses.length
-        highlightGiftIndex.value = (highlightGiftIndex.value + 1) % gameGifts.length
+        // Случайно выбираем индексы для анимации
+        highlightIndex.value = Math.floor(Math.random() * gameClasses.length)
+        highlightGiftIndex.value = Math.floor(Math.random() * gameGifts.length)
         currentStep++
       } else {
         // Останавливаемся на выбранных значениях
-        clearInterval(spinInterval.value)
         highlightIndex.value = targetClassIndex
         highlightGiftIndex.value = targetGiftIndex
-
-        // Прокручиваем к выбранным элементам
-        setTimeout(() => {
-          scrollToHighlightedItems()
-        }, 100)
+        clearInterval(spinInterval.value)
       }
-    }, 100) // Скорость вращения
+    }, 50) // Уменьшаем интервал для более быстрой анимации
   } else {
-    // Если анимация остановлена, устанавливаем индексы на выбранные значения
+    // Если анимация остановлена, очищаем интервал
     if (spinInterval.value) {
       clearInterval(spinInterval.value)
-    }
-
-    if (props.selectedClass && props.selectedGift) {
-      const gameClasses = Object.values(gameData[props.selectedGame].classes)
-      const gameGifts = Object.values(gameData[props.selectedGame].gifts)
-
-      highlightIndex.value = gameClasses.findIndex(c => c.en === props.selectedClass.en)
-      highlightGiftIndex.value = gameGifts.findIndex(g => g.en === props.selectedGift.en)
-
-      // Прокручиваем к выбранным элементам
-      setTimeout(() => {
-        scrollToHighlightedItems()
-      }, 100)
-    } else {
-      highlightIndex.value = -1
-      highlightGiftIndex.value = -1
     }
   }
 })
