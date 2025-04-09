@@ -175,7 +175,7 @@ const randomize = async () => {
     isSpinning.value = true
 
     // Ждем завершения анимации
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     // Устанавливаем результат
     result.value = {
