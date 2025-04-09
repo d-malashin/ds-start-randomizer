@@ -71,6 +71,13 @@ const getItemName = (item) => {
   return currentLanguage.value === 'en' ? item.en : item.ru
 }
 
+const scrollToHighlightedItems = () => {
+  const highlightedItems = document.querySelectorAll('.item.highlighted')
+  highlightedItems.forEach(item => {
+    item.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+}
+
 watch(() => props.isSpinning, (newValue) => {
   if (newValue && props.selectedGame) {
     // Очищаем предыдущий интервал, если он существует
@@ -86,7 +93,7 @@ watch(() => props.isSpinning, (newValue) => {
     const targetGiftIndex = gameGifts.findIndex(g => g.en === props.selectedGift?.en)
 
     let currentStep = 0
-    const totalSteps = 40 // Общее количество шагов анимации
+    const totalSteps = 20 // Общее количество шагов анимации
 
     // Запускаем анимацию
     spinInterval.value = setInterval(() => {
@@ -100,6 +107,11 @@ watch(() => props.isSpinning, (newValue) => {
         highlightIndex.value = targetClassIndex
         highlightGiftIndex.value = targetGiftIndex
         clearInterval(spinInterval.value)
+
+        // Прокручиваем к выбранным элементам
+        setTimeout(() => {
+          scrollToHighlightedItems()
+        }, 100)
       }
     }, 50) // Уменьшаем интервал для более быстрой анимации
   } else {
@@ -109,29 +121,6 @@ watch(() => props.isSpinning, (newValue) => {
     }
   }
 })
-
-// Функция для прокрутки к выбранным элементам
-const scrollToHighlightedItems = () => {
-  // Находим все элементы списка
-  const classItems = document.querySelectorAll('.result-item:first-child .item')
-  const giftItems = document.querySelectorAll('.result-item:last-child .item')
-
-  // Прокручиваем к выбранному классу
-  if (highlightIndex.value >= 0 && classItems[highlightIndex.value]) {
-    classItems[highlightIndex.value].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    })
-  }
-
-  // Прокручиваем к выбранному подарку
-  if (highlightGiftIndex.value >= 0 && giftItems[highlightGiftIndex.value]) {
-    giftItems[highlightGiftIndex.value].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    })
-  }
-}
 
 watch(() => locale.value, (newValue) => {
   currentLanguage.value = newValue
