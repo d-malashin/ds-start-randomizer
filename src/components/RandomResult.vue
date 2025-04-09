@@ -7,6 +7,7 @@
           <div v-for="(item, index) in classes" :key="item.en" class="item" :class="{
             'highlighted': highlightIndex === index
           }">
+            <span class="item-number">{{ index + 1 }}</span>
             {{ getItemName(item) }}
           </div>
         </div>
@@ -18,6 +19,7 @@
           <div v-for="(item, index) in gifts" :key="item.en" class="item" :class="{
             'highlighted': highlightGiftIndex === index
           }">
+            <span class="item-number">{{ index + 1 }}</span>
             {{ getItemName(item) }}
           </div>
         </div>
@@ -222,6 +224,21 @@ watch(() => props.selectedGame, (newValue) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.item-number {
+  position: absolute;
+  left: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  color: rgba(255, 215, 0, 0.7);
+}
+
+.item.highlighted .item-number {
+  opacity: 1;
+  color: rgba(255, 215, 0, 1);
+  left: 1rem;
 }
 
 .item.highlighted {
