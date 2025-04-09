@@ -254,7 +254,7 @@ watch(() => props.soundEnabled, (newValue) => {
   min-height: 0;
   overflow: hidden;
   height: calc(100% - 1rem); /* Вычитаем отступ между колонками */
-  max-height: calc(100% - 1rem);
+  max-height: calc(100% - 2.5rem);
 }
 
 .result-item h3 {
