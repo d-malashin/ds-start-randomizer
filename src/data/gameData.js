@@ -366,6 +366,14 @@ export const gameData = {
       }
     },
     gifts: {
+      none: {
+        en: 'None',
+        ru: 'Нет',
+        description: {
+          en: 'A ring that boosts maximum HP. Useful for surviving early encounters.',
+          ru: 'Кольцо, увеличивающее максимальное здоровье. Полезно для выживания в ранних столкновениях.'
+        }
+      },
       lifeRing: {
         en: 'Life Ring',
         ru: 'Кольцо Жизни',
