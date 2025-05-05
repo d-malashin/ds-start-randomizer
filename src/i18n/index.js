@@ -2,10 +2,11 @@ import { createI18n } from 'vue-i18n'
 
 const messages = {
   en: {
-    title: 'Dark Souls Start Randomizer',
+    title: 'Souls Start Randomizer',
     ds1: 'Dark Souls',
     ds2: 'Dark Souls II',
     ds3: 'Dark Souls III',
+    eldenRing: 'Elden Ring',
     randomize: 'Randomize',
     loading: 'Randomizing...',
     selectGame: 'Select Game Version',
@@ -16,10 +17,11 @@ const messages = {
     sound_effects: 'Sound Effects'
   },
   ru: {
-    title: 'Рандомизатор старта Dark Souls',
+    title: 'Souls Start Randomizer',
     ds1: 'Dark Souls',
     ds2: 'Dark Souls II',
     ds3: 'Dark Souls III',
+    eldenRing: 'Elden Ring',
     randomize: 'Рандомизировать',
     loading: 'Рандомизация...',
     selectGame: 'Выберите версию игры',

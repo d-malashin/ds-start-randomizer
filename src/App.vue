@@ -5,6 +5,7 @@
       <img :src="ds1Bg" alt=""/>
       <img :src="ds2Bg" alt=""/>
       <img :src="ds3Bg" alt=""/>
+      <img :src="eldenRingBg" alt=""/>
     </div>
 
     <div class="container">
@@ -68,6 +69,7 @@ import { gameData } from './data/gameData'
 import ds1Bg from './assets/images/ds1-bg.jpg'
 import ds2Bg from './assets/images/ds2-bg.jpg'
 import ds3Bg from './assets/images/ds3-bg.jpg'
+import eldenRingBg from './assets/images/eldenRing-bg.jpg'
 
 const { t, locale } = useI18n()
 
@@ -87,7 +89,8 @@ const soundEnabled = ref(localStorage.getItem('soundEnabled') === 'true' || loca
 const games = [
   { id: 'ds1', name: 'Dark Souls' },
   { id: 'ds2', name: 'Dark Souls II' },
-  { id: 'ds3', name: 'Dark Souls III' }
+  { id: 'ds3', name: 'Dark Souls III' },
+  { id: 'eldenRing', name: 'Elden Ring' }
 ]
 
 const backgroundColor = computed(() => {
@@ -111,6 +114,8 @@ const backgroundImage = computed(() => {
       return `url(${ds2Bg})`
     case 'ds3':
       return `url(${ds3Bg})`
+    case 'eldenRing':
+      return `url(${eldenRingBg})`
     default:
       return `url(${ds1Bg})`
   }
@@ -401,7 +406,8 @@ body {
   left: 0;
   width: 100%;
   text-align: center;
-  padding: 1rem;
+  padding: 0.3rem;
+  font-size: 0.8rem;
   background-color: rgba(0, 0, 0, 0.5);
 }
 

@@ -1,16 +1,16 @@
-# Dark Souls Start Randomizer
+# Souls Start Randomizer
 
-![Dark Souls Start Randomizer](https://raw.githubusercontent.com/d-malashin/ds-start-randomizer/refs/heads/main/public/images/ds1-preview.jpg)
+![Souls Start Randomizer](https://raw.githubusercontent.com/d-malashin/ds-start-randomizer/refs/heads/main/public/images/ds1-preview.jpg)
 
 ## English
 
 ### Description
 
-Dark Souls Start Randomizer is an application that allows players to randomly select a starting class and gift in the Dark Souls series.
+Souls Start Randomizer is an application that allows players to randomly select a starting class and gift in the Souls series.
 
 ### Features
 
-- **Game Selection**: Support for Dark Souls, Dark Souls II, and Dark Souls III.
+- **Game Selection**: Support for Dark Souls, Dark Souls II, Dark Souls III and Elden Ring.
 - **Random Generation**: Randomly selects starting class and gift.
 - **Sound Effects**: Option to enable/disable sound effects.
 
@@ -56,11 +56,11 @@ If you have any questions or suggestions, feel free to contact me at: dmalashin@
 
 ### Описание
 
-Рандомизатор старта Dark Souls — это приложение, которое позволяет игрокам случайным образом выбирать начальный класс и дар в играх серии Dark Souls.
+Рандомизатор старта Souls — это приложение, которое позволяет игрокам случайным образом выбирать начальный класс и дар в играх серии Souls.
 
 ### Функциональность
 
-- **Выбор игры**: Поддержка Dark Souls, Dark Souls II и Dark Souls III.
+- **Выбор игры**: Поддержка Dark Souls, Dark Souls II, Dark Souls III и Elden Ring.
 - **Случайная генерация**: Случайный выбор начального класса и подарка.
 - **Звуковые эффекты**: Возможность включения/выключения звуковых эффектов.
 

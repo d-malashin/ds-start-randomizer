@@ -447,5 +447,171 @@ export const gameData = {
         }
       }
     }
+  },
+  eldenRing: {
+    classes: {
+      vagabond: {
+        en: 'Vagabond',
+        ru: 'Бродяга',
+        description: {
+          en: 'A knight exiled from their homeland. High vigor and strength, equipped with quality armaments.',
+          ru: 'Рыцарь, изгнанный из родных земель. Высокие здоровье и сила, качественное снаряжение.'
+        }
+      },
+      warrior: {
+        en: 'Warrior',
+        ru: 'Воин',
+        description: {
+          en: 'A nomadic warrior who wields dual blades. High dexterity and natural agility.',
+          ru: 'Кочевой воин с двумя клинками. Высокая ловкость и природная подвижность.'
+        }
+      },
+      hero: {
+        en: 'Hero',
+        ru: 'Герой',
+        description: {
+          en: 'A stalwart hero of a badlands chieftain. High strength and endurance.',
+          ru: 'Стойкий герой из племени пустошей. Высокая сила и выносливость.'
+        }
+      },
+      bandit: {
+        en: 'Bandit',
+        ru: 'Бандит',
+        description: {
+          en: 'A dangerous bandit who strikes for weak points. High arcane and dexterity.',
+          ru: 'Опасный бандит, бьющий по слабым местам. Высокие тайны и ловкость.'
+        }
+      },
+      astrologer: {
+        en: 'Astrologer',
+        ru: 'Астролог',
+        description: {
+          en: 'A scholar who reads fate in the stars. High intelligence and mind.',
+          ru: 'Учёный, читающий судьбу по звёздам. Высокий интеллект и разум.'
+        }
+      },
+      prophet: {
+        en: 'Prophet',
+        ru: 'Пророк',
+        description: {
+          en: 'A seer ostracized for inauspicious prophecies. High faith and arcane.',
+          ru: 'Провидец, отвергнутый за зловещие пророчества. Высокие вера и тайны.'
+        }
+      },
+      samurai: {
+        en: 'Samurai',
+        ru: 'Самурай',
+        description: {
+          en: 'A capable fighter from the distant Land of Reeds. Skilled with bow and blade.',
+          ru: 'Умелый воин из далёкой Страны Тростника. Искусен с луком и клинком.'
+        }
+      },
+      prisoner: {
+        en: 'Prisoner',
+        ru: 'Заключённый',
+        description: {
+          en: 'A prisoner bound in an iron mask. High intelligence and dexterity.',
+          ru: 'Узник, закованный в железную маску. Высокий интеллект и ловкость.'
+        }
+      },
+      confessor: {
+        en: 'Confessor',
+        ru: 'Духовник',
+        description: {
+          en: 'A church spy adept at covert operations. Good balance of faith and combat skills.',
+          ru: 'Церковный шпион, искусный в тайных операциях. Баланс веры и боевых навыков.'
+        }
+      },
+      wretch: {
+        en: 'Wretch',
+        ru: 'Мерзавец',
+        description: {
+          en: 'A poor, purposeless soul. Naked but for a club. All attributes at base level.',
+          ru: 'Бедная, бесцельная душа. Без ничего, кроме дубины. Все характеристики базовые.'
+        }
+      }
+    },
+    gifts: {
+      none: {
+        en: 'None',
+        ru: 'Нет',
+        description: {
+          en: 'Begin the journey without any keepsake.',
+          ru: 'Начать путешествие без сувенира.'
+        }
+      },
+      crimsonAmberMedallion: {
+        en: 'Crimson Amber Medallion',
+        ru: 'Медальон Багряного Янтаря',
+        description: {
+          en: 'A medallion with crimson amber inlay. Boosts maximum HP.',
+          ru: 'Медальон с инкрустацией из багряного янтаря. Увеличивает максимальное здоровье.'
+        }
+      },
+      landsOfReeds: {
+        en: 'Lands Between Rune',
+        ru: 'Руна Междуземья',
+        description: {
+          en: 'A golden rune containing the power of the Erdtree. Grants additional runes when used.',
+          ru: 'Золотая руна, содержащая силу Древа Эрд. Даёт дополнительные руны при использовании.'
+        }
+      },
+      goldenSeed: {
+        en: 'Golden Seed',
+        ru: 'Золотое Семя',
+        description: {
+          en: 'A golden seed washed ashore. Upgrades Sacred Flask charges.',
+          ru: 'Золотое семя, вынесенное на берег. Улучшает заряды Священной Фляги.'
+        }
+      },
+      fangedImpAsh: {
+        en: 'Fanged Imp Ashes',
+        ru: 'Прах Клыкастого Беса',
+        description: {
+          en: 'Ashen remains of small, nimble imp spirits. Summonable companions.',
+          ru: 'Пепельные останки маленьких, проворных духов бесов. Призываемые спутники.'
+        }
+      },
+      crackPot: {
+        en: 'Cracked Pot',
+        ru: 'Треснутый Горшок',
+        description: {
+          en: 'Container for crafting throwable items. Reusable.',
+          ru: 'Контейнер для создания метательных предметов. Многоразовый.'
+        }
+      },
+      stoneswordKey: {
+        en: 'Stonesword Key',
+        ru: 'Мечевидный Ключ',
+        description: {
+          en: 'A key that breaks magical seals. Opens some imp statue locks.',
+          ru: 'Ключ, разрушающий магические печати. Открывает некоторые замки статуй бесов.'
+        }
+      },
+      bewitchingBranch: {
+        en: 'Bewitching Branch',
+        ru: 'Чародейская Ветвь',
+        description: {
+          en: 'Sacred branch charged with beguiling power. Turns foes into temporary allies.',
+          ru: 'Священная ветвь, заряженная чарующей силой. Превращает врагов во временных союзников.'
+        }
+      },
+      boiledPrawn: {
+        en: 'Boiled Prawn',
+        ru: 'Варёная Креветка',
+        description: {
+          en: 'Sacred branch charged with beguiling power. Turns foes into temporary allies.',
+          ru: 'Священная ветвь, заряженная чарующей силой. Превращает врагов во временных союзников.'
+        }
+      },
+      shabririGrape: {
+        en: 'Shabiri\'s Woe',
+        ru: 'Клятва Шабрири',
+        description: {
+          en: 'Eyeball of a noble who went mad. Used in certain questlines.',
+          ru: 'Глазное яблоко знатного безумца. Используется в некоторых квестах.'
+        }
+      }
+    }
   }
 }
